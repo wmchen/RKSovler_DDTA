@@ -1,0 +1,9 @@
+numpy<2.0.0
+mlcbase
+scikit-image
+lpips
+protobuf
+sentencepiece
+diffusers==0.31.0
+transformers==4.47.0
+accelerate
