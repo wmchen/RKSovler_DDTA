@@ -1,0 +1,164 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Runge-Kutta Solver and Decoupled Diffusion Transformer Attention</title>
+<link rel="stylesheet" href="./static/css/style.css">
+<link rel="stylesheet" href="./static/css/googleapis_fonts.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+<link rel="stylesheet" href="./static/css/bulma.min.css">
+<link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+<link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+<link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+<link rel="icon" href="./static/image/icon.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" integrity="sha384-wcIxkf4k558AjM3Yz3BBFQUbk/zgIYC2R0QpeeYb+TwlBVMrlgLqwRjRtGZiK7ww" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js" integrity="sha384-hIoBPJpTUs74ddyc4bFZSM1TVlQDA60VBbJS0oA934VSz82sBx1X7kSx2ATBDIyd" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+          // customised options
+          // • auto-render specific keys, e.g.:
+          delimiters: [
+              {left: '$$', right: '$$', display: true},
+              {left: '$', right: '$', display: false},
+              {left: '\\(', right: '\\)', display: false},
+              {left: '\\[', right: '\\]', display: true}
+          ],
+          // • rendering keys, e.g.:
+          throwOnError : false
+        });
+    });
+</script>
+<script>MathJax = {tex: {inlineMath: [['$', '$'],['$$', '$$'], ['\\(', '\\)']]}}</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+
+<body>
+<div class="content">
+  <h1><strong>Runge-Kutta Approximation and Decoupled Attention <br> for Rectified Flow Inversion and Semantic Editing</strong></h1>
+  <!-- <h2 style="text-align:center;">CVPR 2024</h2> -->
+  <p id="authors">
+    <a href="https://www.weimingchen.net/" target="_blank" style="color:blue;">Weiming Chen<sup>1</sup></a> 
+    <a href="https://nkdailab.github.io/author/%E6%9C%B1%E6%97%A8%E5%87%BD/" target="_blank" style="color:blue;">Zhihan Zhu<sup>1</sup></a> 
+    <a href="https://nkdailab.github.io/author/%E7%8E%8B%E4%B8%80%E5%98%89/" target="_blank" style="color:blue;">Yijia Wang<sup>1</sup></a>
+    <a href="https://nkdailab.github.io/author/%E4%BD%95%E5%BF%97%E6%B5%B7/" target="_blank" style="color:blue;">Zhihai He<sup>1,2</sup></a>
+    <br>
+
+    <span style="font-size: 20px"><br>
+    <b><sup>1</sup> Southern University of Science and Technology,  &nbsp&nbsp  <sup>2</sup> Pengcheng Laboratory  <br> </b>
+    <!-- <font size="+2"><p style="text-align: center;"><strong> <span style="color: #FF1493;">NeurIPS 2025</span> </strong></p></font> -->
+  </p>
+  <font size="+2">
+        <p style="text-align: center;">
+          <!-- <a href="https://arxiv.org/pdf/2410.10792" target="_blank">[ArXiv]</a> &nbsp;&nbsp;&nbsp;&nbsp; -->
+          <a href="https://openreview.net/forum?id=TUUvn02oZu" target="_blank">[OpenReview]</a>
+          <!-- <a href="https://github.com/wmchen/RKSovler_DDTA" target="_blank">[Code]</a>&nbsp;&nbsp;&nbsp;&nbsp; -->
+        </p>
+  </font>
+  <br><br>
+  <img src="./static/image/framework_schema.png" class="teaser-gif" style="width:90%;">
+    <p><b>Conceptual illustration of our text-guided semantic editing framework</b>. We propose an efficient high-order inversion method for rectified flow models based on the Runge-Kutta solver of differential equations. We introduce Decoupled Diffusion Transformer Attention (DDTA), a novel mechanism that disentangles text and image attention inside the multimodal diffusion transformers, enabling more precise semantic control.</p>
+</div>
+
+
+<div class="content">
+  <h2 style="text-align:center;">Abstract</h2>
+  <p>Rectified flow (RF) models have recently demonstrated superior generative performance compared to DDIM-based diffusion models. However, in real-world applications, they suffer from two major challenges: (1) low inversion accuracy that hinders the consistency with the source image, and (2) entangled multimodal attention in diffusion transformers, which hinders precise attention control. To address the first challenge, we propose an efficient high-order inversion method for rectified flow models based on the Runge-Kutta solver of differential equations. To tackle the second challenge, we introduce Decoupled Diffusion Transformer Attention (DDTA), a novel mechanism that disentangles text and image attention inside the multimodal diffusion transformers, enabling more precise semantic control. Extensive experiments on image reconstruction and text-guided editing tasks demonstrate that our method achieves state-of-the-art performance in terms of fidelity and editability.</p>
+</div>
+
+
+<div class="content">
+    <h2>Unique Contributions</h2>
+    <ul>
+      <li>We incorporate the Runge-Kutta method into the RF sampling process to perform high-order modeling of the differential trajectory, and propose a high-fidelity inversion method that better aligns the inversion and denoising paths.</li>
+      <p></p>
+      <li>We introduce a decoupled attention mechanism that decouples the entangled text and image attention in MM-DiTs, thereby enabling precise semantic editing in MM-DiT architectures.
+      </li>
+      <p></p>
+      <li>Extensive experimental results on benchmark datasets demonstrate that our method achieves superior performance on both reconstruction and text-guided semantic editing tasks.</li>
+    </ul>
+</div>
+
+<div class="content">
+  <h2>Runge-Kutta Solver (RK Solver)</h2>
+  <p>
+    Given a known state $Z_{t_{t-1}}$, an $r$-order of explicit RK solver builds a series of intermediate slopes $\left \{ K_{1}^{i}, \dots, K_{r}^{i} \right \}$: $$K_{s}^{i} = v_{\theta} \left ( Z_{t_{i-1}} + \Delta t_{i} \sum_{j=1}^{s-1} {a_{sj} K_{j}^{i}}, t_{i-1} + c_{s} \Delta t_{i}, \mathcal{P} \right ),$$ where $\Delta t_{i} = t_{i} - t_{i-1}$ denotes the step size of adjacent states. Then, the next state $Z_{t_{i}}$ can be computed by: $$Z_{t_{i}} = Z_{t_{i-1}} + \Delta t_{i} \sum_{j=1}^{r} {b_{j} K_{j}^{i}} \,\, .$$ The lower triangular matrix $\textbf{A} = \left [ a_{mn} \right ]$ together with the vectors $\textbf{b}^{T}$ and $\textbf{c}$, constitute a Butcher tableau that governs a specific RK method: $$\renewcommand\arraystretch{1.5} \textbf{B} = \begin{array}{c|c} \textbf{c} & \textbf{A} \\ \hline & \textbf{b}^{T} \end{array} \,\,\, .$$ The denoising process of the RK solver has a symmetrical formulation, <em>i.e.</em>, $$K_{s}^{i} = v_{\theta} \left ( Z_{t_{i}} - \Delta {t_{i}} \sum_{j=1}^{s-1} {a_{sj} K_{j}^{i}}, t_{i} - c_{s} \Delta t_{i}, \mathcal{P} \right ),$$ $$Z_{t_{i-1}} = Z_{t_{i}} - \Delta t_{i} \sum_{j=1}^{r} {b_{j} K_{j}^{i}} \,\, .$$ Empirically, the RK solver should adopt the same order for both the inversion and denoising processes.
+  </p>
+</div>
+
+<div class="content">
+  <h2>Decoupled Diffusion Transformer Attention (DDTA)</h2>
+  <p>
+    Our DDTA decouples the entangled text-image attention by dividing the attention map of DiT block into four regions based on the dimension of hidden states, i.e., $[M_{CC}, M_{CI}, M_{IC}, M_{II}]$. Here, $M_{CC}$ and $M_{II}$ correspond to the self-attention maps of the condition and image, while $M_{CI}$ and $M_{IC}$ represent the cross-attention maps between condition and image. Our DDTA preserves the decoupled attention features from the inversion branch and reuses them in the editing branch to improve the faithfulness of the edited image.
+  </p>
+  <img class="summary-img" src="./static/image/overview_DDTA.png" style="width:90%;"> <br>
+</div>
+
+<div class="content">
+  <h2>Image Reconstruction Results</h2>
+  <p>
+    We comprehensively assess the reconstruction performance of our RK solver on the first 1,000 images from the Densely Captioned Images (DCI) dataset. The results presented in the table below demonstrate that our method outperforms all existing approaches across all evaluation metrics.
+  </p>
+  <img class="summary-img" src="./static/image/image_reconstruction_result.jpg" style="width:65%;"> <br>
+  <p>
+    We report the results based on the best-performing configurations, using Heun’s second-order, Kutta’s third-order, and the 3/8-rule fourth-order variants, whose corresponding Butcher tableaus are as follows: $$\renewcommand\arraystretch{1.3}
+\textbf{B}_{r=2} = \, \begin{array}{c|cc}
+0 & 0 & 0 \\
+1 & 1 & 0 \\ \hline 
+  & \frac{1}{2} & \frac{1}{2}
+\end{array}, \quad
+\textbf{B}_{r=3} = \, \begin{array}{c|ccc}
+0 & 0 & 0 & 0 \\
+\frac{1}{2} & \frac{1}{2} & 0 & 0 \\ 
+1 & -1 & 2 & 0 \\ \hline 
+  & \frac{1}{6} & \frac{2}{3} & \frac{1}{6}
+\end{array}, \quad
+\textbf{B}_{r=4} = \, \begin{array}{c|cccc}
+0 & 0 & 0 & 0 & 0 \\
+\frac{1}{3} & \frac{1}{3} & 0 & 0 & 0 \\ 
+\frac{2}{3} & -\frac{1}{3} & 1 & 0 & 0 \\ 
+1 & 1 & -1 & 1 & 0 \\ \hline 
+  & \frac{1}{8} & \frac{3}{8} & \frac{3}{8} & \frac{1}{8}
+\end{array}
+\, \, .$$
+  </p>
+</div>
+
+<div class="content">
+  <h2>Text-Guided Semantic Editing Results</h2>
+  <h4>Quantitative Results</h4>
+  <p>
+    We conduct a comprehensive quantitative comparison on the PIE-bench dataset across various methods, including both DDIM-based and RF-based methods, using SDv1.5 and FLUX.1-dev as their respective baselines. The results shown in the table below support three conclusions: (1) Our method outperforms all baselines in content consistency, with our fourth-order variant achieving the highest PSNR, SSIM, and structure distance. (2) Our method demonstrates competitive editability (closely trailing the best result) while maintaining substantially higher fidelity, highlighting a more favorable trade-off between fidelity and editability. (3) Our method achieves the best overall performance with significantly fewer sampling steps, indicating the superior efficiency of our method.
+  </p>
+  <img class="summary-img" src="./static/image/edit_quantitative.jpg" style="width:95%;"> <br>
+  <h4>User Study</h4>
+  <p>
+    To further evaluate the effectiveness of our proposed method, we employ MLLMs to assess the quality of edited images based on both editing performance and consistency with the source image. This evaluation is performed on the entire PIE-Bench dataset, where for each image, the MLLMs are tasked with selecting the best-edited result among all compared methods. We report the proportion of selections for each method across the dataset. The result shown in the table below indicate that our proposed method is selected significantly more often than all comparisons, demonstrating its superior editing quality and faithfulness.
+  </p>
+  <img class="summary-img" src="./static/image/user_study.jpg" style="width:70%;"> <br>
+  <h4>Qualitative Results</h4>
+  <p>
+    We present qualitative results demonstrating the effectiveness of our method across diverse editing types, including both object and attribute manipulations. While minor unintended background changes may occur, our method consistently outperforms existing baselines in terms of semantic alignment with target prompts and structural consistency with source images, highlighting its robustness and versatility in the text-guided semantic editing task.
+  </p>
+  <img class="summary-img" src="./static/image/edit_qualitative.png" style="width:100%;"> <br>
+</div>
+
+<div class="content">
+  <h2>BibTex</h2>
+  <code>  @inproceedings{rout2025semantic,<br>
+  &nbsp;&nbsp;title={Semantic Image Inversion and Editing using Rectified Stochastic Differential Equations},<br>
+  &nbsp;&nbsp;author={Rout, L and Chen, Y and Ruiz, N and Caramanis, C and Shakkottai, S and Chu, W},<br>
+  &nbsp;&nbsp;booktitle={The Thirteenth International Conference on Learning Representations},<br>
+  &nbsp;&nbsp;year={2025}<br>
+  &nbsp;&nbsp;url={https://openreview.net/forum?id=Hu0FSOSEyS}<br>
+  } </code> 
+</div>
+
+<div class="content" id="acknowledgements">
+  <p><strong>Acknowledgements</strong>:
+    This work is supported by the National Natural Science Foundation of China (No. 62331014) and Project 2021JC02X103. We acknowledge the computational support of the Center for Computational Science and Engineering at Southern University of Science and Technology.
+  </p>
+</div>
+</body>
+
+</html>
