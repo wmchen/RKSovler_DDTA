@@ -3,6 +3,8 @@
 **Runge-Kutta Approximation and Decoupled Attention for Rectified Flow Inversion and Semantic Editing** <br>
 [Weiming Chen](https://www.weimingchen.net), [Zhihan Zhu](https://nkdailab.github.io/author/%E6%9C%B1%E6%97%A8%E5%87%BD/), [Yijia Wang](https://nkdailab.github.io/author/%E7%8E%8B%E4%B8%80%E5%98%89/), [Zhihai He](https://nkdailab.github.io/author/%E4%BD%95%E5%BF%97%E6%B5%B7/)
 
+[![arXiv](https://img.shields.io/badge/arXiv-2509.12888-b31b1b.svg?style=plastic)](https://arxiv.org/abs/2509.12888)
+
 
 ## Installation
 
